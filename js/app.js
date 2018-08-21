@@ -361,7 +361,7 @@ function deletesCandy() {
 function endGame() {
 	$('div.panel-tablero, div.time').effect('fold');
 	$('h1.main-titulo').addClass('title-over')
-		.text('Gracias por jugar!');
+		.text('Game Over');
 	$('div.score, div.moves, div.panel-score').width('100%');
 
 }

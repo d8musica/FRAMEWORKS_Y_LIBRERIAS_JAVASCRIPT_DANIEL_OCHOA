@@ -1,4 +1,24 @@
-//punto 1. cambia el color del titulo y alterna
+//dANIEL oCHOA mORENO
+$(function() {
+	initGame();
+});
+
+
+function initGame() {
+	colorBlink('h1.main-titulo');
+	$('.btn-reinicio').click(function () {
+		if ($(this).text() === 'Reiniciar') {
+			location.reload(true);
+		}
+		checkBoard();
+		$(this).text('Reiniciar');
+		$('#timer').startTimer({
+			onComplete: endGame
+		})
+	});
+}
+
+
 function colorBlink(elemento) {
 	blanco(elemento);
   function blanco(elemento){
@@ -19,14 +39,14 @@ function colorBlink(elemento) {
       });}
 }
 
-//punto 2. funcion para generar números aleatorios
+
 function getRandomInt(min, max) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-// obtiene filas de dulces o columas
+
 function giveCandyArrays(arrayType, index) {
 
 	var candyCol1 = $('.col-1').children();
@@ -57,19 +77,19 @@ function giveCandyArrays(arrayType, index) {
 	}
 }
 
-// arreglos de filas
+
 function candyRows(index) {
 	var candyRow = giveCandyArrays('rows', index);
 	return candyRow;
 }
 
-// arreglos de colunmnas
+
 function candyColumns(index) {
 	var candyColumn = giveCandyArrays('columns');
 	return candyColumn[index];
 }
 
-//punto 3. Valida si hay dulces que se eliminarán en una columna
+
 function columnValidation() {
 	for (var j = 0; j < 7; j++) {
 		var counter = 0;
@@ -125,7 +145,7 @@ function deleteColumnCandy(candyPosition, candyColumn) {
 	}
 }
 
-// Valida si hay dulces que deben eliminarse en una fila
+
 function rowValidation() {
 	for (var j = 0; j < 6; j++) {
 		var counter = 0;
@@ -181,7 +201,7 @@ function deleteHorizontal(candyPosition, candyRow) {
 	}
 }
 
-//contador de puntuacion muestra la puntuacion
+
 function setScore(candyCount) {
 	var score = Number($('#score-text').text());
 	switch (candyCount) {
@@ -203,7 +223,7 @@ function setScore(candyCount) {
 	$('#score-text').text(score);
 }
 
-//pone los elemento caramelo en el tablero
+
 function checkBoard() {
 	fillBoard();
 }
@@ -228,19 +248,16 @@ function fillBoard() {
 	setValidations();
 }
 
-// Si hay dulces que borrar
+
 function setValidations() {
 	columnValidation();
 	rowValidation();
-	// Si hay dulces que borrar
 	if ($('img.delete').length !== 0) {
 		deletesCandyAnimation();
 	}
 }
 
 
-//punto 7. interacción del usuario con el elemento caramelo es drag and drop
-//efecto de movimiento entre los caramelos
 function addCandyEvents() {
 	$('img').draggable({
 		containment: '.panel-tablero',
@@ -267,7 +284,6 @@ function enableCandyEvents() {
 	$('img').droppable('enable');
 }
 
-//hace que el caramelo sea solido al moverse
 function constrainCandyMovement(event, candyDrag) {
 	candyDrag.position.top = Math.min(100, candyDrag.position.top);
 	candyDrag.position.bottom = Math.min(100, candyDrag.position.bottom);
@@ -275,7 +291,6 @@ function constrainCandyMovement(event, candyDrag) {
 	candyDrag.position.right = Math.min(100, candyDrag.position.right);
 }
 
-//reemplaza a los caramelos anteriores
 function swapCandy(event, candyDrag) {
 	var candyDrag = $(candyDrag.draggable);
 	var dragSrc = candyDrag.attr('src');
@@ -302,14 +317,12 @@ function checkBoardPromise(result) {
 	}
 }
 
-//valida la puntuacion por cantidad de elementos en linea
 function updateMoves() {
 	var actualValue = Number($('#movimientos-text').text());
 	var result = actualValue += 1;
 	$('#movimientos-text').text(result);
 }
 
-//eliminacion automatica de los elementos
 function deletesCandyAnimation() {
 	disableCandyEvents();
 	$('img.delete').effect('pulsate', 400);
@@ -331,7 +344,6 @@ function deletesCandyAnimation() {
 		});
 }
 
-//llenado automatico de los espacios con elementos
 function showPromiseError(error) {
 	console.log(error);
 }
@@ -346,9 +358,6 @@ function deletesCandy() {
 	})
 }
 
-//punto 4 y 6. temporizador y boton reiniciar
-//cambia el aspecto de la página
-//final del juego
 function endGame() {
 	$('div.panel-tablero, div.time').effect('fold');
 	$('h1.main-titulo').addClass('title-over')
@@ -356,25 +365,3 @@ function endGame() {
 	$('div.score, div.moves, div.panel-score').width('100%');
 
 }
-
-// inicia el juego
-function initGame() {
-
-	colorBlink('h1.main-titulo');
-
-	$('.btn-reinicio').click(function () {
-		if ($(this).text() === 'Reiniciar') {
-			location.reload(true);
-		}
-		checkBoard();
-		$(this).text('Reiniciar');
-		$('#timer').startTimer({
-			onComplete: endGame
-		})
-	});
-}
-
-// Prepara el juego
-$(function() {
-	initGame();
-});
